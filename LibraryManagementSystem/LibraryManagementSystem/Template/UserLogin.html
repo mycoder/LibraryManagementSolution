@@ -1,0 +1,49 @@
+﻿<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/angular.js"></script>
+<link href="../Scripts/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/User/User.js"></script>
+
+
+<div ng-app="LibraryModule" ng-controller="UserCtrl">
+    <table class="table">
+        <tr>
+            <td style="font-weight:bold;font-size:25px;color:#3c114f;text-align:center">Sign In</td>
+        </tr>
+
+        <tr>
+
+            <td>
+                <form name="form" novalidate style="width: 700px; margin: 0px auto; margin-top:100px;">
+                    <div style="color:red">{{Message}}</div>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="text" class="form-control" ng-model="userLoginEmail" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type="password" class="form-control" ng-model="userLoginPassword" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="button" value="Login" class="form-control btn btn-success" ng-click="login()" /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-center"> <a href="#CheckingID" class="btn btn-success">Create New Account</a></td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div style="font-weight:bold;color:#211340;font-size:20px;"> {{ responseData }} </div>
+
+
+</div>

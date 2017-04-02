@@ -1,0 +1,326 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/MyApp/Book/Book.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+<style>
+    .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+    .modal-lg {
+        width: 1100px;
+    }
+</style>
+
+
+<div ng-app="LibraryModule" ng-controller="BookCtrl" class="container">
+    <p><a data-ng-click="showconfirm()" href="javascript:;" class="btn btn-primary">Add New Book</a></p>
+    <div>
+        <div class="input-group">
+            <input type="text" class="form-control glyphicon-search" ng-model="serch" placeholder="Search" name="srch-term" id="srch-term">
+        </div>
+    </div>
+    <br />
+    <table class="table table-responsive">
+        <thead>
+            <tr class="btn-info">
+                <!--<th>Book Id</th>-->
+                <th>Book Name</th>
+                <th>ISBN</th>
+                <th>Publication Date</th>
+                <th>Edition</th>
+                <th>Book Copy</th>
+                <th>Book Loan Copy</th>
+                <th>Accession Code</th>
+                <th>Book Cost</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Publication</th>
+                <th>Level No</th>
+                <th>Desk</th>
+                <th>Shelf</th>
+                <th></th>
+                <!--<th></th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="book in Books|filter:serch">
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.BookName}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.BookName" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.ISBN}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.ISBN" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.PublicationDate}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.AuthorName" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.EditionNo}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.EditionNo" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.BookCopy}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.BookCopy" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.LoanCopy}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.AuthorName" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.AccessCode}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.AccessCode" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.BookCost}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.BookCost" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.Description}}</p>
+                    <input type="text" data-ng-show="book.editMode" data-ng-model="book.Description" class="form-control" />
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.CategoryName}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-model="category" ng-options="cat.ID as cat.CategoryName for cat in categorys">
+                        <option selected="selected" value="">Select Category</option>
+                    </select>
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.AuthorName}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-model="author" ng-options="auth.ID as auth.AuthorName for auth in authors">
+                        <option selected="selected" value="">Select Author</option>
+                    </select>
+                </td>
+
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.PublicationName}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-model="publication" ng-options="pub.ID as pub.PublicationName for pub in publications">
+                        <option selected="selected" value="">Select Publication</option>
+                    </select>
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.LevelNo}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-model="level" ng-change="GetDesk()" ng-options="lev.ID as lev.LevelNo for lev in levels">
+                        <option selected="selected" value="">Select Level</option>
+                    </select>
+                </td>
+
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.DeskName}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-disabled=!desks ng-model="desk" ng-change="GetShelf()" ng-options="des.ID as des.DeskName for des in desks">
+                        <option selected="selected" value="">Select Desk</option>
+                    </select>
+                </td>
+                <td>
+                    <p data-ng-hide="book.editMode">{{book.ShelfName}}</p>
+                    <select id="my_select" data-ng-show="book.editMode" class="form-control" ng-disabled=!shelfs ng-model="shelf" ng-options="shelf.ID as shelf.ShelfName for shelf in shelfs">
+                        <option selected="selected" value="">Select Shelf</option>
+                    </select>
+                </td>
+                <!--<td>
+                    <p data-ng-hide="book.editMode">{{book.CoverPhoto}}</p>
+                    <input data-ng-show="book.editMode" type="file" name="file" accept="image/*" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
+
+                </td>-->
+                <td>
+                    <p data-ng-hide="book.editMode"><a data-ng-click="toggleEdit(book)" class="btn btn-info">Edit</a><a data-ng-click="showconfirmdelet(book)" class="btn btn-danger">Delete</a></p>
+                    <p data-ng-show="book.editMode"><a data-ng-click="toggleEdit(book);Save()" class="btn btn-success">Save</a><a data-ng-click="toggleEdit(book)" class="btn btn-primary">Cancel</a></p>
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!--create new Modals-->
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Add New Book</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="form" novalidate ng-submit="SaveFile()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <table class="table">
+                                    <tr>
+                                        <td>Book Name :</td>
+                                        <td>
+                                            <input type="text" name="BookName" class="form-control" ng-model="BookName" />
+                                            <span style="color:red" ng-show="form.BookName.$error.isDuplicateBookName || submitted">Book name is already exits</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Publication Date :</td>
+                                        <td>
+                                            <input type="text" name="PublicationDate" class="form-control" ng-model="PublicationDate" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>ISBN :</td>
+                                        <td>
+                                            <input type="text" name="ISBN" data-check-isbn class="form-control" ng-model="ISBN" />
+                                            <span style="color:red" ng-show="form.ISBN.$error.isDuplicateISBN || submitted">ISBN is already exits</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Edition :</td>
+                                        <td>
+                                            <input type="number" name="editionno" class="form-control" ng-model="EditionNo" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Book Copy :</td>
+                                        <td>
+                                            <input type="number" name="BookCopy" class="form-control" ng-model="BookCopy" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Accession Code :</td>
+                                        <td>
+                                            <input type="number" name="AccessCode" class="form-control" ng-model="AccessCode" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Book Prize :</td>
+                                        <td>
+                                            <input type="number" name="BookCost" class="form-control" ng-model="BookCost" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description :</td>
+                                        <td>
+                                            <textarea cols="5" rows="5" name="Description" class="form-control" ng-model="Description"> </textarea>
+
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <table class="table table-striped">
+
+                                    <tr>
+                                        <td>Category:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-model="category" ng-options="cat.ID as cat.CategoryName for cat in categorys">
+                                                <option selected="selected" value="">Select Category</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Author:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-model="author" ng-options="auth.ID as auth.AuthorName for auth in authors">
+                                                <option selected="selected" value="">Select Author</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Publication:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-model="publication" ng-options="pub.ID as pub.PublicationName for pub in publications">
+                                                <option selected="selected" value="">Select Publication</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Level:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-model="level" ng-change="GetDesk()" ng-options="lev.ID as lev.LevelNo for lev in levels">
+                                                <option selected="selected" value="">Select Level</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Desk:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-disabled=!desks ng-model="desk" ng-change="GetShelf()" ng-options="des.ID as des.DeskName for des in desks">
+                                                <option selected="selected" value="">Select Desk</option>
+                                            </select>
+                                    </tr>
+                                    <tr>
+                                        <td>Shelf:</td>
+                                        <td>
+
+                                            <select id="my_select" class="form-control" ng-disabled=!shelfs ng-model="shelf" ng-options="shelf.ID as shelf.ShelfName for shelf in shelfs">
+                                                <option selected="selected" value="">Select Shelf</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Select Cover Photo:</td>
+                                        <td>
+                                            <input type="file" name="file" accept="image/*" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
+                                        </td>
+                                        <td>
+                                            <span class="text-danger" ng-show="(form.file.$dirty || IsFormSubmitted) && form.file.$error.required">Image Required!</span>
+                                            <span class="text-danger">{{FileInvalidMessage}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><button class="btn btn-success" type="submit">Add New</button></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Update Message Modal-->
+    <div class="modal fade" id="confirmModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Update data successfully <span style="color:red"><b>{{message}}</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal action-->
+    <div class="modal fade" id="confirmModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Action</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete <span style="color:red"><b>{{message}}</b></span> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-ng-click="Delete()">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

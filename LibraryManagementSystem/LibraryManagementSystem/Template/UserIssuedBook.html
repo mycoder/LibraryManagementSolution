@@ -1,0 +1,217 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/UserIssuedBook/UserIssuedBook.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/bootstrap.min.js"></script>
+<script src="../Scripts/jspdf.min.js"></script>
+<style>
+    *{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }    
+    h3 {
+        border-bottom: 1px solid green;
+    }
+    #userDetails, #Bookdetails {
+        margin-top: 20px;
+    }
+</style>
+
+
+<div ng-app="LibraryModule" ng-controller="UserIssuedBookCtrl">
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>New Book Borrow</h3></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Registration No</h3>
+                        <input type="text" class="form-control" id="RegNo" name="txtRegno" ng-model="regNoText" placeholder="Enter Registration No" required /><br />
+                        <input type="button" class="btn btn-info" value="View" ng-click="GetUser()" />
+                        <div class="well" id="userDetails">
+                            <table class="table table-striped" ng-show="filteredItems">
+                                <thead>
+                                    <tr>
+                                        <td><div><img src="{{user.PhotoUrl}}" width="250" height="200" /></div></td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{user.Name}}</td>
+                                        <td>{{user.Email}}</td>
+                                        <td>{{user.Address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h3>Search By:</h3>
+                        <select class="form-control" ng-model="Column">
+                            <option value="" selected>Select from Below..</option>
+                            <option value="BookName">Book</option>
+                            <option value="ISBN">ISBN</option>
+                        </select>
+                        <input type="text" class="form-control" ng-model="searchSpecificText" placeholder="Enter Book Title or ISBN number" /> <br />
+                        <input type="button" class="btn btn-info" value="Book" ng-click="GeBookForIssued()" />
+                        <div class="well" id="Bookdetails">
+                            <table class="table table-striped" ng-show="filteredSpecficItems">
+                                <thead>
+                                    <tr>
+                                        <th>CoverPhoto</th>
+                                        <th>Name</th>
+                                        <th>Publication Date</th>
+                                        <th>Edition</th>
+                                        <th>Author Name</th>
+                                        <th>Publication Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="{{book.CoverPhoto}}" alt="Alternate Text" width="80" height="80" /></td>
+                                        <td>{{book.BookName}}</td>
+                                        <td>{{book.PublicationDate|date:dd/MM/yyyy}}</td>
+                                        <td>{{book.EditionNo}}</td>
+                                        <td>{{book.AuthorName}}</td>
+                                        <td>{{book.PublicationName}}</td>                                        
+                                    </tr>
+                                    <tr>
+                                        <td><button type="button" class="btn btn-info" ng-click="GeBookForIssuedAgain()">Add to Basket</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Borrow Basket</h3>
+                        <div class="well" id="basket">
+                            <table class="table table-striped" id="bookSearched" ng-show="filteredSpecficItemsAgain">
+                                <tbody>
+                                    <tr>
+                                        <td><img src="{{bookAgain.CoverPhoto}}" alt="Alternate Text" width="80" height="80" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{bookAgain.BookName}}</td>
+                                        <td>{{bookAgain.PublicationDate|date:dd/MM/yyyy}}</td>
+                                        <td>{{bookAgain.EditionNo}}</td>
+                                        <td>{{bookAgain.AuthorName}}</td>
+                                        <td>{{bookAgain.PublicationName}}</td>
+                                        <!--<td><button type="button" ng-click=""><span class="glyphicon glyphicon-remove"></span></button></td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <h3>Borrow Date & Days</h3>
+                        <form ng-submit="Add()" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Issue Date :</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="IssuedDate" id="focusedInput" type="datetime" value="Enter the Date" ng-model="IssuedDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Due Date :</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" name="DueDate" type="datetime" value="Enter Time over Date" ng-model="TimeOutDate">
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-success" id="btnAssign" data-toggle="modal" data-target="#BookIssueDetails" type="submit">Assign Book</button>
+                                <!--<button type="button" class="btn btn-info btn-lg"  >Open Modal</button>-->
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        {{Message}}{{errorMessage.Message}}
+    </div>
+    <!--  -->
+    <!-- Modal -->
+    <div id="BookIssueDetails" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Book Issue Details</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped" id="tblBody">
+                        <tbody>
+                            <tr>
+                                <td>Registration No</td>
+                                <td id="regNo">{{issuedbook.RegNo}}</td>
+                            </tr>
+                            <tr>
+                                <td>User Name</td>
+                                <td id="userName">{{issuedbook.UserName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Book Name</td>
+                                <td id="bookName">{{issuedbook.BookName}}</td>
+                            </tr>
+                            <tr>
+                                <td >ISBN</td>
+                                <td id="ISBN">{{issuedbook.ISBN}}</td>
+                            </tr>
+                            <tr>
+                                <td>Issued Date</td>
+                                <td id="issueDate">{{issuedbook.IssuedDate|date:dd/MM/yyyy}}</td>
+                            </tr>
+                            <tr>
+                                <td>Time Over Date</td>
+                                <td id="timeOverDate">{{issuedbook.TimeOutDate|date:dd/MM/yyyy}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" onclick="ResultPdf()" class="btn btn-success" data-dismiss="modal">PDF Generator</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--  -->
+</div>
+
+<script>
+    function ResultPdf() {
+        var regNo = $('#regNo').text();
+        var userName = $('#userName').text();
+        var bookName = $('#bookName').text();
+        var Isbn = $('#ISBN').text();
+        var issueDate = $('#issueDate').text();
+        var timeOverDate = $('#timeOverDate').text();
+        var doc = new jsPDF();
+
+        doc.text(80, 20, 'Book Issue Sheet');
+        doc.text(20, 40,"Registration No: "+ regNo);
+        doc.text(20, 50,"User Name: "+ userName);
+        doc.text(20, 60,"Book Name: "+ bookName);
+        doc.text(20, 70,"ISBN:"+ Isbn);
+        doc.text(20, 80,"Issue Date: "+ issueDate);
+        doc.text(20, 90,"Due Date: "+ timeOverDate);
+        
+
+
+
+        doc.save('BookIssued.pdf');
+    }
+
+    //$(document).ready(function () {
+    //    $('#btnAssign').click(function () {
+    //        $('#BookIssueDetails').modal('show');
+    //    });
+    //})
+</script>

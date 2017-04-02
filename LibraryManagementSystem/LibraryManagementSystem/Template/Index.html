@@ -1,0 +1,187 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/Search/BookSearch.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+
+<div ng-app="LibraryModule" ng-controller="BookSearchCtrl">
+    <div class="btn-success"><h2><a class="btn btn-primary" href="#UserProfile"><span class="glyphicon glyphicon-home"></span></a><a class="btn btn-info" href="#AdvanceSearch"><span class="glyphicon glyphicon-search"></span>Advanced Search</a><span style="margin-left:35%">Catalogue Search</span></h2></div>
+    <form style="width:90%;margin:auto">
+        <table class="table">
+            <tr class="btn-info">
+                <td>
+                    <input type="text" class="form-control" ng-model="searchText" name="BookSearch" ng-keyup="GetBook()" placeholder="Search Book " />
+                </td>
+                <td><a class="btn btn-success" href="#AdvanceSearch">Advanced Search</a></td>
+            </tr>
+        </table>
+    </form>
+    <div style="width:80%;margin:auto;border-radius:10px; box-shadow:-5PX 5PX" ng-repeat="book in books">
+        <table style="width:1200px">
+            <tr>
+                <td>
+                    <div class="thumbnail">
+                        <img src="{{book.CoverPhoto}}" alt="Alternate Text" width="100" height="80" />
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-primary" style="width:170px;"><h3><b>{{book.BookName}}</b></h3></div>
+                    <p style="font-size:15px;color:green;"><b> {{book.AuthorName}}</b></p>
+                    <p> {{book.PublicationDate|date:dd/MM/yyyy}}</p>
+                    <p>Edition: ({{book.EditionNo}})</p>
+                    <p>AvailAble Copy :({{book.AvailAbleBook}})</p>
+                    <p>Published by : {{book.PublicationName}}</p>
+                </td>
+                <td>
+                    <input class="btn btn-success" type="button" ng-click="GetBookLocationByID(book.ID)" value="Shelf Location" />
+                    <input class="btn btn-info" type="button" ng-click="GetBookDescriptionByID(book.ID)" value="Description" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!--Location Modal-->
+    <div class="modal fade" id="confirmModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Central Library</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr class="btn-info">
+                            <td colspan="3" style="text-align:center">Shelf Location</td>
+                        </tr>
+                        <tr>
+                            <td>Book Name</td>
+                            <td>:</td>
+                            <td>{{bookLocation.BookName}}</td>
+                        </tr>
+                        <tr>
+                            <td>ISBN</td>
+                            <td>:</td>
+                            <td>{{bookLocation.ISBN}}</td>
+                        </tr>
+                        <tr>
+                            <td>Level No</td>
+                            <td>:</td>
+                            <td>{{bookLocation.LevelNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>Desk Name</td>
+                            <td>:</td>
+                            <td>{{bookLocation.DeskName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Shelf Name</td>
+                            <td>:</td>
+                            <td>{{bookLocation.ShelfName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Book Copy</td>
+                            <td>:</td>
+                            <td>{{bookLocation.BookCopy}}</td>
+                        </tr>
+                        <!--<tr>
+                            <td>AvailAble Book :</td>
+                            <td>{{bookLocation.AvailAbleBook}}</td>
+                        </tr>-->
+                        <!--<tr>
+                            <td>RequestNo :</td>
+                            <td>{{bookLocation.RequestNo}}</td>
+                        </tr>-->
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">Print</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--description Modal-->
+    <div class="modal fade" id="confirmModaldescription" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Central Library</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr class="btn-info">
+                            <td colspan="3" style="text-align:center">Description</td>
+                        </tr>
+                            <tr>
+                                <td>Book Name</td>
+                                <td>:</td>
+                                <td>{{bookDescription.BookName}}</td>
+                            </tr>
+                            <tr>
+                                <td>ISBN </td>
+                                <td>:</td>
+                                <td>{{bookDescription.ISBN}}</td>
+                            </tr>
+                            <tr>
+                                <td>Publication Date</td>
+                                <td>:</td>
+                                <td>{{bookDescription.PublicationDate}}</td>
+                            </tr>
+                            <tr>
+                                <td>Edition</td>
+                                <td>:</td>
+                                <td>{{bookDescription.EditionNo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Book Copy</td>
+                                <td>:</td>
+                                <td>{{bookDescription.BookCopy}}</td>
+                            </tr>
+                            <tr>
+                                <td>Category</td>
+                                <td>:</td>
+                                <td>{{bookDescription.CategoryName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Author</td>
+                                <td>:</td>
+                                <td>{{bookDescription.AuthorName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Publication</td>
+                                <td>:</td>
+                                <td>{{bookDescription.PublicationName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Level No</td>
+                                <td>:</td>
+                                <td>{{bookDescription.LevelNo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Desk</td>
+                                <td>:</td>
+                                <td>{{bookDescription.DeskName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Shelf</td>
+                                <td>:</td>
+                                <td>{{bookDescription.ShelfName}}</td>
+                            </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default">Print</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

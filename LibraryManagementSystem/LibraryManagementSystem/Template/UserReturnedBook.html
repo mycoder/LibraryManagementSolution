@@ -1,0 +1,79 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/UserReturnedBook/UserReturnedBook.js"></script>
+<style>
+    #userDetails {
+        margin-top: 20px;
+    }
+</style>
+<div ng-app="LibraryModule" ng-controller="UserReturnedBookCtrl">
+    <div class="container">
+        <div class="panel panel-success">
+            <div class="panel-heading"><h3>Return Book</h3></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h3>Registration No</h3>
+                        <input class="form-control" type="text" ng-model="regNoText" ng-keyup="GetIssuedBook();GetIssuedUser()" />
+                        <div class="well" id="userDetails" ng-show="filteredItems">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>
+
+                                            <div><img src="{{user.PhotoUrl}}" width="250" height="200" /></div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <td>{{user.UserName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Registration No</th>
+                                        <td>{{user.RegistrationNo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td>{{user.Address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3>Return Book List</h3>
+                        <div class="well" id="borrowedList">
+                            <table class="table table-striped" ng-show="filteredSpecficItems" ng-repeat="book in books">
+                                <thead>
+                                    <tr>
+                                        <th>Book Cover Photo</th>
+                                    </tr>
+                                    <tr>
+                                        <td><img src="{{book.CoverPhoto}}" alt="Alternate Text" width="80" height="80" /></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Book Name No</th>
+                                        <th>Issued Date-</th>
+                                        <th>Time Out Date</th>
+                                        <th>Return Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                                    
+                                    <tr>
+                                        <td>{{book.BookName}}</td>
+                                        <td>{{book.IssuedDate}}</td>
+                                        <td>{{book.TimeOutDate}}</td>
+                                        <td><input type="datetime" name="ReturnBookDate" class="form-control" ng-model="book.returnDate" /></td>
+                                        <td><input type="button" class="btn btn-success" value="Return" ng-click="ReturnBook(book)" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,160 @@
+﻿<script src="../Scripts/angular.js"></script>
+<link href="../Scripts/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/User/User.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+<div ng-app="LibraryModule" ng-controller="UserCtrl">
+
+    <form name="form" novalidate>
+        <div class="col-md-10 col-md-offset-1">
+            <div class="well">
+                <!--This table contains the fields that we want to capture to register a new user-->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="success">
+                            <th colspan="2">
+                                New Teacher Registration
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Teacher Name:</td>
+                            <td>
+                                <input type="text" class="form-control" ng-model="Name" name="TeacherName" placeholder="Please write your name" required />
+
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.TeacherName.$dirty || Submitted) && form.TeacherName.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address:</td>
+                            <td>
+                                <!--    <textarea class="form-control" ng-model="Address" name="Address" rows="5" cols="3" required></textarea>-->
+                                <input type="text" name="Address" class="form-control" placeholder="Please write your address" ng-model="Address" />
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.Address.$dirty || Submitted) && form.Address.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>
+                                <!--<input type="email" class="form-control" ng-model="Email" name="email" placeholder="Please write your Email" required />-->
+                                <input type="text" name="Email" data-check-email class="form-control" placeholder="Please write a valid email" ng-model="Email" />
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.email.$dirty || Submitted) && form.email.$error.required">Required</span>
+                                <span style="color:red" ng-show="form.Email.$error.isDuplicateEmail || submitted">Email is already exits</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td>
+                                <!--    <input type="password" class="form-control" ng-model="Password" name="Pass" placeholder="Please write your password" required />-->
+                                <input type="password" name="Password" class="form-control" placeholder="Password must be eight characters" ng-model="Password" />
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.Pass.$dirty || Submitted) && form.Pass.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Teacher Identity No:</td>
+                            <td>
+                                <!--<input type="text" class="form-control" ng-model="IdentityID" name="Identity" placeholder="Please write your IdentityNo" required />-->
+                                <input type="number" name="IdentityID" class="form-control" placeholder="Please write your identity no" ng-model="IdentityID" />
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.Identity.$dirty || Submitted) && form.Identity.$error.required">Required</span>
+                            </td>
+                            <td>
+                                <input type="hidden" id="Usertype" value="Teacher" />
+                            </td>
+                        </tr>
+                        <!--<tr >
+                            <td>Confirm Password:</td>
+                            <td><input type="password" class="form-control" ng-model="userRegistrationConfirmPassword" name="ConfirmPass" placeholder="Please write your password Again" required /></td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.ConfirmPass.$dirty || Submitted) && form.ConfirmPass.$error.required">Required</span>
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <td>Phone Number:</td>
+                            <td><input type="text" class="form-control" ng-model="PhoneNumber" name="PhoneNumber" placeholder="Please write your phone number" required /></td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.PhoneNumber.$dirty || Submitted) && form.PhoneNumber.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>  Upload Photo  </b>
+                            </td>
+
+                            <td>
+                                <input type="file" name="file" value="Upload File" accept="image/*" onchange="angular.element(this).scope().selectFileforUpload(this.files)" required />
+                                <span class="error" ng-show="(f1.file.$dirty || IsFormSubmitted) && f1.file.$error.required">Image required SEA !</span>
+                                <span class="error">{{FileInvalidMessage}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="button" value="Register" class="btn btn-success" ng-click="SaveFile()" /></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" colspan="2">
+                                <div style="font-weight:bold;color:red;font-size:20px;">{{ Message }}</div>
+                                <div style="font-weight:bold;color:red;font-size:20px;"> {{ responseData }} </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--Bootstrap modal dialog that shows up when regsitration is successful-->
+                <!--<div class="modal fade" tabindex="-1" id="successModal"
+                     data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title">Success</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <h2 class="modal-title">Registration Successful!</h2>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success"
+                                        data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <!--Bootstrap alert to display any validation errors-->
+                <div id="divError" class="alert alert-danger collapse">
+                    <a id="linkClose" href="#" class="close">&times;</a>
+                    <div id="divErrorText"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--Update Message Modal-->
+    <div class="modal fade" id="confirmModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Your Registration Successful, Library Registration No <h2 style="color:green;">{{user.RegistrationNo}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--<div style="font-weight:bold;color:#211340;font-size:20px;">{{ Message }}</div>
+    <div style="font-weight:bold;color:#211340;font-size:20px;"> {{ responseData }} </div>-->
+</div>

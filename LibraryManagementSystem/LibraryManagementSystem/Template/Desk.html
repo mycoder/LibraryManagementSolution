@@ -1,0 +1,124 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/MyApp/Desk/Desk.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+
+
+
+<div ng-app="LibraryModule" ng-controller="DeskCtrl" class="container">
+    <p><a data-ng-click="showconfirm()" href="javascript:;" class="btn btn-primary">Add New Desk</a></p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr class="btn-info">
+                <!--<th>Desk Id</th>-->
+                <th>Desk Name</th>
+                <th>
+                    <div class="input-group">
+                        <input type="text" class="form-control glyphicon-search" ng-model="serch" placeholder="Search" name="srch-term" id="srch-term">
+                    </div>
+                </th>
+                <th>Level No</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="Des in Desks|filter:serch">
+            <tr>
+                <!--<td>{{Cat.ID}}</td>-->
+                <td>
+                    <p data-ng-hide="Des.editMode">{{Des.DeskName}}</p>
+                    <input type="text" data-ng-show="Des.editMode" data-ng-model="Des.DeskName" class="form-control" />
+                </td>
+                <td></td>
+                <td>
+                    <p data-ng-hide="Des.editMode">{{Des.LevelNo}}</p>
+                    <select id="my_select" data-ng-show="Des.editMode" class="form-control" ng-model="levelNo" ng-options="lev.ID as lev.LevelNo for lev in levels" required>
+                        <option selected="selected" value="">Select Level</option>
+                    </select>
+                    <!--<input type="text" data-ng-show="Des.editMode" data-ng-model="Des.LevelNo" class="form-control" />-->
+                </td>
+                <td></td>
+                <td>
+                    <p data-ng-hide="Des.editMode"><a data-ng-click="toggleEdit(Des)" class="btn btn-info">Edit</a><a data-ng-click="showconfirmdelet(Des)" class="btn btn-danger">Delete</a></p>
+                    <p data-ng-show="Des.editMode"><a data-ng-click="toggleEdit(Des);Save()" class="btn btn-success">Save</a><a data-ng-click="toggleEdit(Des)" class="btn btn-primary">Cancel</a></p>
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!--create new Modals-->
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Create New Desk</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="form" novalidate ng-submit="Add()">
+                        <table class="table">
+                            <tr>
+                                <td>Desk Name :</td>
+                                <td>
+                                    <input type="text" name="DeskName" data-check-desk-name class="form-control" ng-model="DeskName" />
+                                    <span style="color:red" ng-show="form.DeskName.$error.isDuplicateDeskName || submitted">Desk name is already exits</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Level:</td>
+                                <td>
+
+                                    <select id="my_select" class="form-control" ng-model="levelNo" ng-options="lev.ID as lev.LevelNo for lev in levels">
+                                        <option selected="selected" value="">Select Level</option>
+                                    </select>
+                            </tr>
+                            <tr>
+                                <td><button class="btn btn-success" type="submit" ng-disabled="!form.$valid">Add New</button></td>
+                                <td><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    Thanks for Using This
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Update Message Modal-->
+    <div class="modal fade" id="confirmModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Update data successfully <span style="color:red"><b>{{message}}</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal action-->
+    <div class="modal fade" id="confirmModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Action</h4>
+                </div>
+                <v class="modal-body">
+                    Adire you sure to delete <span style="color:red"><b>{{message}}</b></span> ?
+                </v>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-ng-click="Delete()">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

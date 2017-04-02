@@ -1,0 +1,58 @@
+﻿<script src="../Scripts/angular.js"></script>
+<link href="../Scripts/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/User/User.js"></script>
+
+
+
+<div ng-app="LibraryModule" ng-controller="UserCtrl">
+    <table class="table">
+        <tr>
+            <td style="font-weight:bold;font-size:25px;color:#3c114f; text-align:center;">Checking University Identity</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <form name="form" novalidate style="width: 700px; margin: 0px auto; margin-top:100px;">
+                    <div style="color:red">{{Message}}</div>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr >
+                            <td>Membership:</td>
+                            <td>
+                                <select class="form-control" ng-model="usertype" name="usertype" required>
+                                    <option selected="selected" value="">Select...</option>
+                                    <option value="Student">Student</option>
+                                    <option value='Teacher'>Teacher</option>
+                                    <option value='Librarian'>Librarian</option>
+                                </select>
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.UserType.$dirty || Submitted) && form.UserType.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td>Identity No:</td>
+                            <td>
+                                <!--<input type="text" class="form-control" ng-model="IdentityID" name="Identity" placeholder="Please Enter your IdentityNo" required />-->
+                                <input type="number" name="IdentityID" class="form-control"  ng-model="IdentityID" />
+                            </td>
+                            <td>
+                                <span class="text-danger" ng-show="(form.Identity.$dirty || Submitted) && form.Identity.$error.required">Required</span>
+                            </td>
+                        </tr>
+                        
+                        <tr >
+                            <td></td>
+                            <td><input type="button" value="Check" class="form-control btn btn-success" ng-click="LoadData();" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <div style="font-weight:bold;color:#211340;font-size:20px;">{{ Message }}</div>
+    <div style="font-weight:bold;color:#211340;font-size:20px;"> {{ responseData }} </div>
+</div>

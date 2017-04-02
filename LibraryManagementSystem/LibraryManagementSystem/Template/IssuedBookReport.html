@@ -1,0 +1,112 @@
+﻿<link href="../../Content/bootstrap.css" rel="stylesheet" />
+<link href="../../Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="../../Scripts/angular.js"></script>
+<script src="../../Scripts/jquery-1.12.4.js"></script>
+<script src="../../Scripts/jquery-ui-1.12.1.js"></script>
+<script src="../../Scripts/LibraryService/Service.js"></script>
+<script src="../../Scripts/MyApp/Report/IssuedBookReport.js"></script>
+
+
+<style>
+   /*#MainDiv label{
+          width:120px;
+          display:inline-block;
+    }
+#MainDiv  input{
+          width:300px;
+           display:inline-block;
+    }*/
+</style>
+
+<div ng-app="LibraryModule" ng-controller="IssuedBookReportCtrl">
+    <div class="container" style="width:60%;margin:auto">
+        <div class="btn-info" style="text-align:center;"><h2>Issued Book Report</h2></div>
+        <div id="MainDiv">
+
+            <table class="table table-striped">
+                <tr>
+                    <td><input name="isIssued" type="radio" ng-model="isIssued" ng-value="true" /> Issued</td>
+                    <td></td>
+                    <td><input ng-value="false" ng-model="isIssued" name="isIssued" type="radio" /> Non-Issued</td>
+
+                </tr>
+                <tr>
+                    <td>From Date</td>
+                    <td>:</td>
+                    <td><input id="datepicker" class="form-control" type="text" ng-model="FromDate" /></td>
+                </tr>
+                <tr>
+                    <td>To Date</td>
+                    <td>:</td>
+                    <td><input id="datepicker2" class="form-control" type="text" ng-model="ToDate" /></td>
+                </tr>
+                <tr>
+                    <td><input value="Report" class="btn btn-primary" type="button" ng-click="GetIssuedBookReport()" /></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+        <div>
+            <table class="table table-striped" ng-show="filteredItems">
+                <thead>
+                    <tr class="btn-success">
+                        <th>Book Name</th>
+                        <th>ISBN</th>
+                        <th>Publication Date</th>
+                        <th>Edition</th>
+                        <!--<th>Book Copy</th>-->
+                        <th>Book Loan Copy</th>
+                        <!--<th>Accession Code</th>-->
+                        <!--<th>Book Cost</th>-->
+                        <!--<th>Description</th>-->
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Publication</th>
+                        <!--<th>Level No</th>
+                <th>Desk</th>
+                <th>Shelf</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="Book in books">
+
+                        <td>{{Book.BookName}}</td>
+                        <td>{{Book.ISBN}}</td>
+                        <td>{{Book.PublicationDate}}</td>
+                        <td>{{Book.EditionNo}}</td>
+                        <!--<td>{{Book.BookCopy}}</td>-->
+                        <td>{{Book.LoanCopy}}</td>
+                        <!--<td>{{Book.AccessCode}}</td>
+                <td>{{Book.BookCost}}</td>
+                <td>{{Book.Description}}</td>-->
+                        <td>{{Book.CategoryName}}</td>
+                        <td>{{Book.AuthorName}}</td>
+                        <td>{{Book.PublicationName}}</td>
+                        <!--<td>{{Book.LevelNo}}</td>
+                <td>{{Book.DeskName}}</td>
+                <td>{{Book.ShelfName}}</td>-->
+
+                    </tr>
+                    <tr><td colspan="15"><input class="btn btn-primary" type="button" value="PDF" /></td></tr>
+                </tbody>
+
+            </table>
+            
+        </div>
+    
+        <script>
+            $('#datepicker').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true
+            });
+            $('#datepicker2').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true
+            });
+        </script>
+    </div>

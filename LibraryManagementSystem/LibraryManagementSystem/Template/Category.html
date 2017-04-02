@@ -1,0 +1,110 @@
+﻿
+<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/MyApp/Category/Category.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+
+
+
+<div ng-app="LibraryModule" ng-controller="CategoryCtrl" class="container">
+    <p><a data-ng-click="showconfirm()" href="javascript:;" class="btn btn-primary">Add New Category</a></p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr class="btn-info">
+                <!--<th>Category Id</th>-->
+                <th>Category Name</th>
+                <th>
+                    <div class="input-group">
+                        <input type="text" class="form-control glyphicon-search" ng-model="serch" placeholder="Search" name="srch-term" id="srch-term">
+                    </div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="Cat in Categorys|filter:serch">
+            <tr>
+                <!--<td>{{Cat.ID}}</td>-->
+                <td>
+                    <p data-ng-hide="Cat.editMode">{{Cat.CategoryName}}</p>
+                    <input type="text" data-ng-show="Cat.editMode" data-ng-model="Cat.CategoryName" class="form-control" />
+                </td>
+                <td></td>
+                <td>
+                    <p data-ng-hide="Cat.editMode"><a data-ng-click="toggleEdit(Cat)" class="btn btn-info">Edit</a><a data-ng-click="showconfirmdelet(Cat)" class="btn btn-danger">Delete</a></p>
+                    <p data-ng-show="Cat.editMode"><a data-ng-click="toggleEdit(Cat);Save()" class="btn btn-success">Save</a><a data-ng-click="toggleEdit(Cat)" class="btn btn-primary">Cancel</a></p>
+                    
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!--create new Modals-->
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Create New Category</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="form" novalidate ng-submit="Add()">
+                        <table class="table">
+                            <tr>
+                                <td>Category Name :</td>
+                                <td>
+                                    <input type="text" name="CategoryName" class="form-control" data-check-category-name ng-model="CategoryName" required />
+
+                                    <span style="color:red" ng-show="form.CategoryName.$error.isDuplicateCategoryName || submitted">Category name is already exits</span>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td><button class="btn btn-success" type="submit" ng-disabled="!form.$valid">Add New</button></td>
+                                <td><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    Thanks for Using This
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Update Message Modal-->
+    <div class="modal fade" id="confirmModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Update data successfully <span style="color:red"><b>{{message}}</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal action-->
+    <div class="modal fade" id="confirmModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Action</h4>
+                </div>
+                <v class="modal-body">
+                    Adire you sure to delete <span style="color:red"><b>{{message}}</b></span> ?
+                </v>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-ng-click="Delete()">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

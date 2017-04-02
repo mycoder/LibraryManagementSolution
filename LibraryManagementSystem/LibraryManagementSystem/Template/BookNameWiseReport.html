@@ -1,0 +1,89 @@
+﻿<link href="../../Content/bootstrap.css" rel="stylesheet" />
+<link href="../../Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<script src="../../Scripts/angular.js"></script>
+<script src="../../Scripts/jquery-1.12.4.js"></script>
+<script src="../../Scripts/jquery-ui-1.12.1.js"></script>
+<script src="../../Scripts/LibraryService/Service.js"></script>
+<script src="../../Scripts/MyApp/Report/BookNameWiseReport.js"></script>
+
+<style>
+    #MainDiv label {
+        width: 120px;
+        display: inline-block;
+    }
+
+    #MainDiv input {
+        width: 300px;
+        display: inline-block;
+    }
+</style>
+
+<div ng-app="LibraryModule" ng-controller="BookNameWiseReportCtrl">
+    <div class="container" style="width:60%;margin:auto">
+        <div class="btn-info" style="text-align:center;"><h2>Book Report</h2></div>
+        <table class="table table-striped">
+            <tr>
+                <td>Group By</td>
+                <td>:</td>
+                <td>
+                    <select class="form-control" ng-model="dropColumn">
+                        <option value="" selected>Select..</option>
+                        <option value="BookName">Book</option>
+                        <option value="AuthorName">Author</option>
+                        <option value="PublicationName">Publication</option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>From Date</td>
+                <td>:</td>
+                <td><input id="datepicker" class="form-control" type="text" ng-model="FromDate" /></td>
+            </tr>
+            <tr>
+                <td>To Date</td>
+                <td>:</td>
+                <td><input id="datepicker2" class="form-control" type="text" ng-model="ToDate" /></td>
+            </tr>
+            <tr>
+                <td><input value="Report" class="btn btn-success" type="button" ng-click="GetBookReportByBookName()" /></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </table>
+        <div>
+            <table class="table table-striped" ng-show="filteredItems" border="1">
+                <thead class="table table-striped">
+                    <tr class="btn-info">
+                        <th>Book Name</th>
+                        <th>Sum Of Issued Times</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="Book in books">
+
+                        <td>{{Book.BookName}}</td>
+                        <td>{{Book.TotalBook}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input class="btn btn-primary" type="button" value="PDF" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    <script>
+        $('#datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+        $('#datepicker2').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+    </script>
+</div>

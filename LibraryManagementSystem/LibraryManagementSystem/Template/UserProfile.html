@@ -1,0 +1,191 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/UserProfile/UserProfile.js"></script>
+<!--<style>
+    #MainContent{width:100%;
+float:left;
+    }
+    #myCollection{
+        float:left;
+                 width:15%;
+
+                 border-right:dashed
+    }
+    #ShowLoanOrRequest{float:left;
+                       width:70%;
+                    margin-left:20px;
+
+    }
+
+</style>-->
+<div ng-app="LibraryModule" ng-controller="UserProfileCtrl">
+    <div class="container-fluid">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-info pull-right" ng-click="logout()">Sign Out</button>
+                    </div>
+                    <div class="col-md-6">                        
+                        <h1>{{user.Name}}</h1>
+                    </div>
+                    <div class="col-md-6">                        
+                        <h1 class="pull-right">{{userRole}}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">                    
+                    <div><img src="{{user.PhotoUrl}}" width="250" height="200"/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <ul class="nav nav-tabs">
+                                    <li role="presentation" class="active"><a data-toggle="tab" href="#Loan" class="btn btn-info" ng-click="GetUser()">My Collection</a></li>
+                                    <li role="presentation"><a data-toggle="tab" href="#MyAccount" class="btn btn-info">My Account</a></li>
+                                </ul>
+                            </div>
+                            <div class="panel-body tab-content">
+                                <div id="myCollection" class="tab-pane fade in active">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <ul class="nav nav-pills nav-stacked">
+                                                <li class="active"><a href="#Loan" ng-click="GetIssuedBook()">Loan({{user.LoanNumber}})</a></li>
+                                                <li><a href="#UserProfile">Request({{user.RequestNumber}})</a></li>
+                                                <li><a href="#UserProfile">Personal Collections</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div ng-show="filteredSpecficItems">
+                                                <div class="well" ng-repeat="book in books">
+                                                    <table class="table table-condensed">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Book Name</th>
+                                                                <td>{{book.BookName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ISBN</th>
+                                                                <td>{{book.ISBN}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Category Name</th>
+                                                                <td>{{book.CategoryName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Author Name</th>
+                                                                <td>{{book.AuthorName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Publication Name</th>
+                                                                <td>{{book.PublicationName}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Issued Date</th>
+                                                                <td>{{book.IssuedDate}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Time Out Date</th>
+                                                                <td>{{book.TimeOutDate}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="MyAccount" class="tab-pane fade">
+                                    <table class="table table-striped">
+
+                                        <tr>
+                                            <th>User Name:</th>
+                                            <td><p>{{user.UserName}}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Address:</th>
+                                            <td>
+                                                <p>{{user.Address}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email:</th>
+                                            <td>
+                                                <p>{{user.Email}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Identity ID:</th>
+                                            <td>
+                                                <p>{{user.IdentityID}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Loan Number:</th>
+                                            <td>
+                                                <p>{{user.LoanNumber}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Request Number:</th>
+                                            <td>
+                                                <p>{{user.RequestNumber}}</p>
+                                            </td>
+                                        </tr>
+
+
+                                    </table>
+                                    <!--<table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>User Name</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Identity ID</th>
+                                                <th>User Type</th>
+                                                <th>Loan Number</th>
+                                                <th>Request Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <p>{{user.UserName}}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{user.Address}}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{user.Email}}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{user.IdentityID}}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{user.UserTypeName}}</p>
+                                                </td>
+
+                                                <td>
+                                                    <p>{{user.LoanNumber}}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{user.RequestNumber}}</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>-->
+                                </div>
+                                </
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

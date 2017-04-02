@@ -1,0 +1,102 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/BookStock/BookStock.js"></script>
+
+<div ng-app="LibraryModule" ng-controller="BookStockCtrl">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3>Book Stock Management</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>Search Book</h3>
+                        <select ng-model="Column" class="form-control">
+                            <option value="" selected>Select..</option>
+                            <option value="BookName">Title</option>
+                            <option value="ISBN">ISBN</option>
+                        </select>
+                        <input type="text" ng-model="searchSpecificText" class="form-control" /><br />
+                        <input type="button" value="Book" ng-click="GeBookForStockUpdate()" class="btn btn-success" />
+                    </div>
+                    <div class="col-md-8" ng-show="filteredSpecficItems">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>Cover Photo</th>
+                                    <td><div class="thumbnail"><img src="{{book.CoverPhoto}}" alt="Alternate Text" width="150" height="100" /></div></td>
+                                </tr>
+                                <tr>
+                                    <th>Book Name</th>
+                                    <td>{{book.BookName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>ISBN</th>
+                                    <td>{{book.ISBN}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Publication Date</th>
+                                    <td>{{book.PublicationDate|date:dd/MM/yyyy}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Edition</th>
+                                    <td>{{book.EditionNo}}</td>
+                                </tr>
+                                <tr>
+                                    <th>BookCopy</th>
+                                    <td>{{book.BookCopy}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Book Copy</th>
+                                    <td><input class="form-control" type="number" ng-model="BookCopy" /></td>
+                                </tr>
+                                <tr>
+                                    <th>Book Cost</th>
+                                    <td><input class="form-control" type="number" ng-model="BookCost" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br />
+                        <input class="btn btn-success" type="button" value="Save" ng-click="Save()" />                        
+                    </div>
+                    <br />
+                    <div class="col-md-12" ng-show="filteredItems">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Book Name</th>
+                                    <th>ISBN</th>
+                                    <th>Publication Date</th>
+                                    <th>Edition</th>
+                                    <th>Book Copy</th>
+                                    <th>Book Loan Copy</th>
+                                    <th>Accession Code</th>
+                                    <th>Book Cost</th>
+                                    <th>Description</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>{{bookEdit.BookName}}</td>
+                                    <td>{{bookEdit.ISBN}}</td>
+                                    <td>{{bookEdit.PublicationDate}}</td>
+                                    <td>{{bookEdit.EditionNo}}</td>
+                                    <td>{{bookEdit.BookCopy}}</td>
+                                    <td>{{bookEdit.LoanCopy}}</td>
+                                    <td>{{bookEdit.AccessCode}}</td>
+                                    <td>{{bookEdit.BookCost}}</td>
+                                    <td>{{bookEdit.Description}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>

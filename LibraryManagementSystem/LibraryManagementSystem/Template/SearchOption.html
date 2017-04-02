@@ -1,0 +1,91 @@
+﻿<link href="../Content/bootstrap.css" rel="stylesheet" />
+<link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+<script src="../Scripts/angular.js"></script>
+<script src="../Scripts/jquery-3.1.0.js"></script>
+<script src="../Scripts/LibraryService/Service.js"></script>
+<script src="../Scripts/MyApp/AdvanceSearch/AdvanceSearch.js"></script>
+<script src="../Scripts/bootstrap.js"></script>
+
+<div ng-app="LibraryModule" ng-controller="AdvanceBookSearchCtrl">
+    <div class="btn-success">Search Book Here</div><br /><br />
+    <form style="width:90%;margin:auto">
+        <table class="table">
+            <tr class="btn-primary">
+                <td>
+                    <label>Search By:</label>
+                    <select style="color:green" ng-model="Column">
+                        <option value="" selected>Select..</option>
+                        <option value="BookName">Book</option>
+                        <option value="AuthorName">Author</option>
+                        <option value="PublicationName">Publication</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="form-control" ng-model="searchSpecificText" ng-keyup="GetSearchSpecificBook()" placeholder="Search Book" />
+                </td>
+                <td><a class="btn btn-success" href="AdvanceSearch.html">Advanced Search</a></td>
+            </tr>
+            <tr class="btn-info">
+                <td><input type="radio" ng-model="specficDirection" name="specficDirection" checked="checked" />Ascending</td>
+                <td><input type="radio" ng-model="specficDirection" name="specficDirection" value="reverse" />Descending</td>
+                <td><input type="checkbox" ng-model="exactSpecficSearch" />Is(Exact)</td>
+            </tr>
+        </table>
+    </form>
+       
+        <div class="well" style="width:80%;margin:auto;border:solid;border-radius:10px; box-shadow:-5PX 5PX" ng-show="filteredSpecficItems.length" ng-repeat="book in Specificbooks|filter:searchSpecificText:exactSpecficSearch| orderBy:Column:specficDirection">
+
+            <div style="width:40%;height:40px;border-radius:8px;" class="btn-primary"><h3><strong><span style="color:yellow">Book Name :</span>  {{book.BookName}}</strong></h3></div><div class="pull-right" style="border:solid 1px;width:120px;height:150px;border-radius:5px;margin:auto"><h2> Book Image</h2></div>
+            <div style="color:green"><label><strong>Publication Date :</strong></label> {{book.PublicationDate|date:dd/MM/yyyy}}</div><br />
+            <div style="color:blue"><label><strong>Edition Date :</strong></label> {{book.EditionNo}}</div><br />
+            <div style="width: 40%; height: 35px; border-radius: 8px;" class="btn-info"><label>Wrriten By :</label> {{book.AuthorName}}</div>
+            <br />
+            <a data-ng-click="showconfirmlocation(book)" class="btn btn-success">Location</a>      <button class="btn btn-success">Descriptin</button>
+            <br />
+            <div class="pull-right btn-success">Published by : <span style="color:blue;font:bold;font-size:12px;"> {{book.PublicationName}}</span></div><br />
+        </div>
+
+    <!--Location Modal-->
+    <div class="modal fade" id="confirmModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title" id="myModalLabel">Location</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table" id="printSectionId">
+                        <tr class="btn-info">
+                            <td colspan="2" style="text-align:center">Book Details And Location</td>
+                        </tr>
+                        <tr>
+                            <td>Book Name :</td>
+                            <td>{{book.BookName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Author Name:</td>
+                            <td>{{book.AuthorName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Published by :</td>
+                            <td>{{book.PublicationName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Desk No :</td>
+                            <td>{{book.DeskName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Shelf No :</td>
+                            <td>{{book.ShelfName}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-ng-click="printToCart('printSectionId')">Print</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
